@@ -67,7 +67,10 @@ const Contact = () => {
 
   return (
     <section id="contact" className="py-20 px-4 relative">
-      <div className="max-w-6xl mx-auto">
+      {/* Background overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -75,21 +78,24 @@ const Contact = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 neon-text-glow">
-            <span style={{
-              background: 'linear-gradient(45deg, #60A5FA, #A855F7, #F472B6)',
-              backgroundSize: '200% 200%',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              animation: 'gradient-shift 3s ease infinite'
-            }}>
-              Get In Touch
-            </span>
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Ready to bring your ideas to life? Let's collaborate and create something extraordinary together.
-          </p>
+          {/* Glass background for title */}
+          <div className="bg-black/30 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-2xl inline-block">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 neon-text-glow">
+              <span style={{
+                background: 'linear-gradient(45deg, #60A5FA, #A855F7, #F472B6)',
+                backgroundSize: '200% 200%',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                animation: 'gradient-shift 3s ease infinite'
+              }}>
+                Get In Touch
+              </span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Ready to bring your ideas to life? Let's collaborate and create something extraordinary together.
+            </p>
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -99,7 +105,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 neon-border-subtle"
+            className="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-2xl"
           >
             <h3 className="text-2xl font-bold mb-6 text-white neon-text-subtle">Send a Message</h3>
             
@@ -116,7 +122,7 @@ const Contact = () => {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none text-white placeholder-gray-400 transition-all duration-300 neon-input-focus"
+                    className="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-lg focus:border-blue-500 focus:outline-none text-white placeholder-gray-400 transition-all duration-300 neon-input-focus backdrop-blur-sm"
                   />
                 </motion.div>
                 
@@ -131,7 +137,7 @@ const Contact = () => {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none text-white placeholder-gray-400 transition-all duration-300 neon-input-focus"
+                    className="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-lg focus:border-blue-500 focus:outline-none text-white placeholder-gray-400 transition-all duration-300 neon-input-focus backdrop-blur-sm"
                   />
                 </motion.div>
               </div>
@@ -147,7 +153,7 @@ const Contact = () => {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none text-white placeholder-gray-400 transition-all duration-300 neon-input-focus"
+                  className="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-lg focus:border-blue-500 focus:outline-none text-white placeholder-gray-400 transition-all duration-300 neon-input-focus backdrop-blur-sm"
                 />
               </motion.div>
               
@@ -162,7 +168,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 bg-gray-700/50 border border-gray-600 rounded-lg focus:border-blue-500 focus:outline-none text-white placeholder-gray-400 resize-none transition-all duration-300 neon-input-focus"
+                  className="w-full px-4 py-3 bg-black/40 border border-white/20 rounded-lg focus:border-blue-500 focus:outline-none text-white placeholder-gray-400 resize-none transition-all duration-300 neon-input-focus backdrop-blur-sm"
                 />
               </motion.div>
               
@@ -186,7 +192,7 @@ const Contact = () => {
             viewport={{ once: true }}
             className="space-y-8"
           >
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 neon-border-subtle">
+            <div className="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-2xl">
               <h3 className="text-2xl font-bold mb-6 text-white neon-text-subtle">Contact Information</h3>
               
               <div className="space-y-6">
@@ -200,7 +206,7 @@ const Contact = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="flex items-center space-x-4 p-4 rounded-lg hover:bg-gray-700/50 transition-all duration-300 group cursor-pointer neon-contact-hover"
+                    className="flex items-center space-x-4 p-4 rounded-lg hover:bg-black/40 transition-all duration-300 group cursor-pointer neon-contact-hover"
                     whileHover={{ x: 10, scale: 1.02 }}
                   >
                     <div className="w-12 h-12 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center group-hover:from-blue-500/40 group-hover:to-purple-500/40 transition-all duration-300 neon-icon-bg">
@@ -215,7 +221,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 neon-border-subtle">
+            <div className="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-2xl">
               <h3 className="text-2xl font-bold mb-6 text-white neon-text-subtle">Connect With Me</h3>
               
               <div className="space-y-4">
@@ -229,7 +235,7 @@ const Contact = () => {
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-700/30 to-gray-800/30 rounded-xl hover:from-blue-500/20 hover:to-purple-500/20 transition-all duration-300 group border border-gray-600 hover:border-blue-400 neon-social-card"
+                    className="flex items-center justify-between p-4 bg-black/30 rounded-xl hover:bg-black/50 transition-all duration-300 group border border-white/10 hover:border-blue-400/30 neon-social-card"
                     whileHover={{ scale: 1.02, y: -2 }}
                   >
                     <div className="flex items-center space-x-4">

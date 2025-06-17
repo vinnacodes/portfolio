@@ -38,7 +38,10 @@ const About = () => {
 
   return (
     <section id="about" className="py-20 px-4 relative">
-      <div className="max-w-6xl mx-auto">
+      {/* Background overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
+      
+      <div className="max-w-6xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,14 +49,17 @@ const About = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-            About Me
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            I'm a passionate Full Stack Developer specializing in Java Spring Boot backend development 
-            and React frontend applications. I build scalable, secure, and user-friendly web applications 
-            with modern technologies and best practices.
-          </p>
+          {/* Glass background for title */}
+          <div className="bg-black/30 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-2xl inline-block">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+              About Me
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              I'm a passionate Full Stack Developer specializing in Java Spring Boot backend development 
+              and React frontend applications. I build scalable, secure, and user-friendly web applications 
+              with modern technologies and best practices.
+            </p>
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -66,15 +72,18 @@ const About = () => {
               viewport={{ once: true }}
               className="text-center group"
             >
-              <motion.div
-                className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center group-hover:from-blue-500/40 group-hover:to-purple-500/40 transition-all duration-300"
-                whileHover={{ scale: 1.1, rotateY: 180 }}
-                transition={{ duration: 0.6 }}
-              >
-                <feature.icon size={32} className="text-blue-400 group-hover:text-purple-400 transition-colors" />
-              </motion.div>
-              <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
-              <p className="text-gray-400 leading-relaxed">{feature.description}</p>
+              {/* Glass background for feature cards */}
+              <div className="bg-black/30 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-2xl h-full hover:border-blue-400/30 transition-all duration-300">
+                <motion.div
+                  className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-xl flex items-center justify-center group-hover:from-blue-500/40 group-hover:to-purple-500/40 transition-all duration-300"
+                  whileHover={{ scale: 1.1, rotateY: 180 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <feature.icon size={32} className="text-blue-400 group-hover:text-purple-400 transition-colors" />
+                </motion.div>
+                <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
+                <p className="text-gray-400 leading-relaxed">{feature.description}</p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -87,9 +96,12 @@ const About = () => {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <h3 className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-            Achievements & Recognition
-          </h3>
+          {/* Glass background for achievements title */}
+          <div className="bg-black/30 backdrop-blur-md rounded-3xl p-6 border border-white/10 shadow-2xl mb-8">
+            <h3 className="text-3xl font-bold text-center bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+              Achievements & Recognition
+            </h3>
+          </div>
           
           {achievements.map((achievement, index) => (
             <motion.div
@@ -98,7 +110,7 @@ const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 backdrop-blur-sm rounded-2xl p-8 border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-300"
+              className="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-300 shadow-2xl"
             >
               <div className="flex items-start space-x-6">
                 <motion.div
@@ -135,7 +147,7 @@ const About = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
+          className="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/10 shadow-2xl"
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
             <div>
@@ -163,7 +175,7 @@ const About = () => {
                     <span className="text-sm font-medium text-gray-300">{skill.label}</span>
                     <span className="text-sm text-gray-400">{skill.percentage}%</span>
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-700/50 rounded-full h-2">
                     <motion.div
                       className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full"
                       initial={{ width: 0 }}

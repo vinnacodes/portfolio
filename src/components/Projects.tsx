@@ -73,7 +73,10 @@ const Projects = () => {
 
   return (
     <section id="projects" className="py-20 px-4 relative">
-      <div className="max-w-7xl mx-auto">
+      {/* Background overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -81,12 +84,15 @@ const Projects = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-            Featured Projects
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            Full stack applications showcasing Java Spring Boot backend and React frontend development
-          </p>
+          {/* Glass background for title */}
+          <div className="bg-black/30 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-2xl inline-block">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+              Featured Projects
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              Full stack applications showcasing Java Spring Boot backend and React frontend development
+            </p>
+          </div>
         </motion.div>
 
         {/* Featured Projects */}
@@ -98,7 +104,7 @@ const Projects = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-700 hover:border-gray-600 transition-all duration-300 relative"
+              className="group bg-black/30 backdrop-blur-md rounded-2xl overflow-hidden border border-white/10 hover:border-blue-400/30 transition-all duration-300 relative shadow-2xl"
             >
               {project.status && (
                 <div className="absolute top-4 right-4 z-10">
@@ -115,7 +121,7 @@ const Projects = () => {
                   className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
                   whileHover={{ scale: 1.05 }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="flex space-x-4">
                     <motion.a
                       href={project.liveUrl}
@@ -156,7 +162,7 @@ const Projects = () => {
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="px-3 py-1 bg-gray-700/50 text-gray-300 rounded-full text-sm border border-gray-600"
+                      className="px-3 py-1 bg-black/40 text-gray-300 rounded-full text-sm border border-white/20"
                     >
                       {tag}
                     </span>
@@ -176,7 +182,7 @@ const Projects = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl overflow-hidden border border-gray-700 hover:border-gray-600 transition-all duration-300"
+              className="group bg-black/30 backdrop-blur-md rounded-xl overflow-hidden border border-white/10 hover:border-blue-400/30 transition-all duration-300 shadow-2xl"
             >
               <div className="relative overflow-hidden">
                 <motion.img
@@ -184,7 +190,7 @@ const Projects = () => {
                   alt={project.title}
                   className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="flex space-x-3">
                     <motion.a
                       href={project.liveUrl}
@@ -217,7 +223,7 @@ const Projects = () => {
                   {project.tags.slice(0, 3).map((tag) => (
                     <span
                       key={tag}
-                      className="px-2 py-1 bg-gray-700/50 text-gray-300 rounded text-xs border border-gray-600"
+                      className="px-2 py-1 bg-black/40 text-gray-300 rounded text-xs border border-white/20"
                     >
                       {tag}
                     </span>

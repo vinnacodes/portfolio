@@ -1,151 +1,207 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Stars, Float } from '@react-three/drei';
+import { OrbitControls, Stars, Float, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Animated space debris/asteroids
-const SpaceDebris = ({ position, size = 0.1 }: { position: [number, number, number], size?: number }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.3;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.2;
-      meshRef.current.position.x += Math.sin(state.clock.elapsedTime * 0.5) * 0.001;
-    }
-  });
-
-  return (
-    <Float speed={1} rotationIntensity={0.5} floatIntensity={0.5}>
-      <mesh ref={meshRef} position={position}>
-        <dodecahedronGeometry args={[size]} />
-        <meshStandardMaterial 
-          color="#4F46E5" 
-          emissive="#1E40AF" 
-          emissiveIntensity={0.2}
-          transparent
-          opacity={0.7}
-        />
-      </mesh>
-    </Float>
-  );
-};
-
-// Floating energy orbs
-const EnergyOrb = ({ position, color }: { position: [number, number, number], color: string }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.material.emissiveIntensity = 0.3 + Math.sin(state.clock.elapsedTime * 2) * 0.2;
-      meshRef.current.position.y += Math.sin(state.clock.elapsedTime + position[0]) * 0.002;
-    }
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.2} floatIntensity={1}>
-      <mesh ref={meshRef} position={position}>
-        <sphereGeometry args={[0.3, 16, 16]} />
-        <meshStandardMaterial 
-          color={color}
-          emissive={color}
-          emissiveIntensity={0.3}
-          transparent
-          opacity={0.8}
-        />
-      </mesh>
-    </Float>
-  );
-};
-
-// Cosmic rings
-const CosmicRing = ({ position, radius = 2 }: { position: [number, number, number], radius?: number }) => {
+// Realistic Planet Component
+const Planet = ({ position, size = 1, color, ringColor, hasRings = false }: { 
+  position: [number, number, number], 
+  size?: number, 
+  color: string,
+  ringColor?: string,
+  hasRings?: boolean 
+}) => {
+  const planetRef = useRef<THREE.Mesh>(null);
   const ringRef = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
-    if (ringRef.current) {
-      ringRef.current.rotation.z = state.clock.elapsedTime * 0.5;
-      ringRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+    if (planetRef.current) {
+      planetRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+      planetRef.current.position.x += Math.sin(state.clock.elapsedTime * 0.2) * 0.002;
+      planetRef.current.position.z += Math.cos(state.clock.elapsedTime * 0.15) * 0.001;
+    }
+    if (ringRef.current && hasRings) {
+      ringRef.current.rotation.z = state.clock.elapsedTime * 0.3;
+      ringRef.current.rotation.x = Math.PI / 2;
     }
   });
 
   return (
     <Float speed={0.5} rotationIntensity={0.1} floatIntensity={0.3}>
-      <mesh ref={ringRef} position={position}>
-        <torusGeometry args={[radius, 0.05, 8, 32]} />
-        <meshStandardMaterial 
-          color="#8B5CF6"
-          emissive="#7C3AED"
-          emissiveIntensity={0.4}
-          transparent
-          opacity={0.6}
-        />
-      </mesh>
+      <group position={position}>
+        {/* Planet */}
+        <mesh ref={planetRef}>
+          <sphereGeometry args={[size, 32, 32]} />
+          <meshStandardMaterial 
+            color={color}
+            emissive={color}
+            emissiveIntensity={0.1}
+            roughness={0.8}
+            metalness={0.2}
+          />
+        </mesh>
+        
+        {/* Planet Rings */}
+        {hasRings && (
+          <mesh ref={ringRef}>
+            <torusGeometry args={[size * 1.5, size * 0.1, 8, 32]} />
+            <meshStandardMaterial 
+              color={ringColor || color}
+              emissive={ringColor || color}
+              emissiveIntensity={0.2}
+              transparent
+              opacity={0.6}
+            />
+          </mesh>
+        )}
+        
+        {/* Planet Glow */}
+        <mesh>
+          <sphereGeometry args={[size * 1.2, 16, 16]} />
+          <meshBasicMaterial 
+            color={color}
+            transparent
+            opacity={0.1}
+          />
+        </mesh>
+      </group>
     </Float>
   );
 };
 
-// Nebula particles
-const NebulaParticles = () => {
-  const points = useRef<THREE.Points>(null);
-  
-  const particlesPosition = useMemo(() => {
-    const positions = new Float32Array(2000 * 3);
-    const colors = new Float32Array(2000 * 3);
-    
-    for (let i = 0; i < 2000; i++) {
-      // Create clustered nebula effect
-      const radius = Math.random() * 25 + 5;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.random() * Math.PI;
-      
-      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i * 3 + 2] = radius * Math.cos(phi);
-      
-      // Color variation for nebula effect
-      const colorChoice = Math.random();
-      if (colorChoice < 0.4) {
-        colors[i * 3] = 0.3; colors[i * 3 + 1] = 0.5; colors[i * 3 + 2] = 1; // Blue
-      } else if (colorChoice < 0.7) {
-        colors[i * 3] = 0.8; colors[i * 3 + 1] = 0.4; colors[i * 3 + 2] = 1; // Purple
-      } else {
-        colors[i * 3] = 1; colors[i * 3 + 1] = 0.6; colors[i * 3 + 2] = 0.8; // Pink
-      }
+// Asteroid Belt
+const AsteroidBelt = () => {
+  const asteroids = useMemo(() => {
+    const temp = [];
+    for (let i = 0; i < 50; i++) {
+      const angle = (i / 50) * Math.PI * 2;
+      const radius = 15 + Math.random() * 5;
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const y = (Math.random() - 0.5) * 2;
+      const size = 0.05 + Math.random() * 0.1;
+      temp.push({ position: [x, y, z] as [number, number, number], size });
     }
+    return temp;
+  }, []);
+
+  return (
+    <>
+      {asteroids.map((asteroid, index) => (
+        <Float key={index} speed={0.5 + Math.random()} rotationIntensity={1} floatIntensity={0.5}>
+          <mesh position={asteroid.position}>
+            <dodecahedronGeometry args={[asteroid.size]} />
+            <meshStandardMaterial 
+              color="#8B7355"
+              emissive="#4A3728"
+              emissiveIntensity={0.1}
+              roughness={0.9}
+            />
+          </mesh>
+        </Float>
+      ))}
+    </>
+  );
+};
+
+// Distant Galaxy
+const DistantGalaxy = ({ position }: { position: [number, number, number] }) => {
+  const galaxyRef = useRef<THREE.Points>(null);
+  
+  const galaxyGeometry = useMemo(() => {
+    const positions = new Float32Array(1000 * 3);
+    const colors = new Float32Array(1000 * 3);
+    
+    for (let i = 0; i < 1000; i++) {
+      const radius = Math.random() * 3;
+      const angle = Math.random() * Math.PI * 2;
+      const height = (Math.random() - 0.5) * 0.5;
+      
+      positions[i * 3] = Math.cos(angle) * radius;
+      positions[i * 3 + 1] = height;
+      positions[i * 3 + 2] = Math.sin(angle) * radius;
+      
+      colors[i * 3] = 0.8 + Math.random() * 0.2;
+      colors[i * 3 + 1] = 0.6 + Math.random() * 0.4;
+      colors[i * 3 + 2] = 1;
+    }
+    
     return { positions, colors };
   }, []);
 
   useFrame((state) => {
-    if (points.current) {
-      points.current.rotation.x = state.clock.elapsedTime * 0.02;
-      points.current.rotation.y = state.clock.elapsedTime * 0.03;
+    if (galaxyRef.current) {
+      galaxyRef.current.rotation.z = state.clock.elapsedTime * 0.05;
     }
   });
 
   return (
-    <points ref={points}>
+    <points ref={galaxyRef} position={position}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={particlesPosition.positions.length / 3}
-          array={particlesPosition.positions}
+          count={galaxyGeometry.positions.length / 3}
+          array={galaxyGeometry.positions}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-color"
-          count={particlesPosition.colors.length / 3}
-          array={particlesPosition.colors}
+          count={galaxyGeometry.colors.length / 3}
+          array={galaxyGeometry.colors}
           itemSize={3}
         />
       </bufferGeometry>
       <pointsMaterial 
-        size={0.03} 
+        size={0.02} 
         vertexColors 
         transparent 
-        opacity={0.8}
+        opacity={0.6}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
+      />
+    </points>
+  );
+};
+
+// Space Dust
+const SpaceDust = () => {
+  const dustRef = useRef<THREE.Points>(null);
+  
+  const dustGeometry = useMemo(() => {
+    const positions = new Float32Array(3000 * 3);
+    
+    for (let i = 0; i < 3000; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 100;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+    }
+    
+    return positions;
+  }, []);
+
+  useFrame((state) => {
+    if (dustRef.current) {
+      dustRef.current.rotation.x = state.clock.elapsedTime * 0.001;
+      dustRef.current.rotation.y = state.clock.elapsedTime * 0.002;
+    }
+  });
+
+  return (
+    <points ref={dustRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          count={dustGeometry.length / 3}
+          array={dustGeometry}
+          itemSize={3}
+        />
+      </bufferGeometry>
+      <pointsMaterial 
+        size={0.005} 
+        color="#666666"
+        transparent 
+        opacity={0.3}
+        sizeAttenuation
       />
     </points>
   );
@@ -156,44 +212,41 @@ const Scene3D = () => {
     <Canvas
       camera={{ position: [0, 0, 15], fov: 75 }}
       className="w-full h-full"
-      style={{ background: 'linear-gradient(to bottom, #0F0F23, #1A0B2E, #16213E)' }}
+      style={{ background: 'linear-gradient(to bottom, #000000, #0A0A0F, #1A0B2E)' }}
     >
-      {/* Lighting setup for space environment */}
-      <ambientLight intensity={0.2} color="#4F46E5" />
-      <pointLight position={[10, 10, 10]} intensity={0.8} color="#60A5FA" />
-      <pointLight position={[-10, -10, -10]} intensity={0.6} color="#A855F7" />
-      <pointLight position={[0, 0, 20]} intensity={0.4} color="#F472B6" />
+      {/* Realistic space lighting */}
+      <ambientLight intensity={0.1} color="#1a1a2e" />
+      <pointLight position={[20, 20, 20]} intensity={0.5} color="#ffffff" />
+      <pointLight position={[-20, -20, -20]} intensity={0.3} color="#4F46E5" />
+      <directionalLight position={[0, 0, 50]} intensity={0.2} color="#A855F7" />
       
-      {/* Stars background */}
+      {/* Deep space stars */}
       <Stars 
-        radius={100} 
-        depth={50} 
-        count={3000} 
-        factor={4} 
-        saturation={0.8} 
+        radius={200} 
+        depth={100} 
+        count={5000} 
+        factor={6} 
+        saturation={0.9} 
         fade 
-        speed={0.5}
+        speed={0.2}
       />
       
-      {/* Nebula particles */}
-      <NebulaParticles />
+      {/* Space dust for depth */}
+      <SpaceDust />
       
-      {/* Energy orbs */}
-      <EnergyOrb position={[-8, 4, -5]} color="#3B82F6" />
-      <EnergyOrb position={[8, -3, -8]} color="#8B5CF6" />
-      <EnergyOrb position={[5, 6, -12]} color="#F472B6" />
-      <EnergyOrb position={[-6, -4, -6]} color="#06B6D4" />
+      {/* Realistic planets */}
+      <Planet position={[-25, 8, -30]} size={2} color="#FF6B35" hasRings={true} ringColor="#FFB347" />
+      <Planet position={[30, -10, -40]} size={1.5} color="#4A90E2" />
+      <Planet position={[-35, -15, -50]} size={1.8} color="#8B5A3C" hasRings={true} ringColor="#D4A574" />
+      <Planet position={[40, 12, -35]} size={1.2} color="#50C878" />
+      <Planet position={[-20, 20, -60]} size={0.8} color="#DA70D6" />
       
-      {/* Cosmic rings */}
-      <CosmicRing position={[-10, 2, -15]} radius={3} />
-      <CosmicRing position={[12, -5, -20]} radius={2.5} />
+      {/* Asteroid belt */}
+      <AsteroidBelt />
       
-      {/* Space debris */}
-      <SpaceDebris position={[-15, 8, -10]} size={0.15} />
-      <SpaceDebris position={[15, -6, -12]} size={0.12} />
-      <SpaceDebris position={[8, 10, -18]} size={0.18} />
-      <SpaceDebris position={[-12, -8, -14]} size={0.14} />
-      <SpaceDebris position={[0, 12, -25]} size={0.16} />
+      {/* Distant galaxies */}
+      <DistantGalaxy position={[-50, 0, -80]} />
+      <DistantGalaxy position={[60, -20, -90]} />
       
       {/* Subtle orbit controls */}
       <OrbitControls
@@ -201,11 +254,11 @@ const Scene3D = () => {
         enablePan={false}
         enableRotate={true}
         autoRotate
-        autoRotateSpeed={0.3}
-        maxPolarAngle={Math.PI / 1.8}
-        minPolarAngle={Math.PI / 2.2}
-        maxAzimuthAngle={Math.PI / 6}
-        minAzimuthAngle={-Math.PI / 6}
+        autoRotateSpeed={0.1}
+        maxPolarAngle={Math.PI / 1.6}
+        minPolarAngle={Math.PI / 2.4}
+        maxAzimuthAngle={Math.PI / 8}
+        minAzimuthAngle={-Math.PI / 8}
       />
     </Canvas>
   );

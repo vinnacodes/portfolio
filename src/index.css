@@ -15,7 +15,7 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #0F0F23 0%, #1A0B2E 25%, #16213E 50%, #0F172A 100%);
+  background: linear-gradient(135deg, #000000 0%, #0A0A0F 25%, #1A0B2E 50%, #0F172A 100%);
   color: #ffffff;
   overflow-x: hidden;
   min-height: 100vh;
@@ -27,7 +27,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1E293B;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -111,10 +111,6 @@ body {
 
 .neon-underline {
   box-shadow: 0 0 8px rgba(96, 165, 250, 0.8);
-}
-
-.neon-logo {
-  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.4));
 }
 
 .neon-mobile-button:hover {
@@ -227,8 +223,8 @@ body {
 
 /* Glassmorphism utility */
 .glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -266,7 +262,7 @@ img[loading] {
   aspect-ratio: 1 / 1;
 }
 
-/* Space-themed background enhancements */
+/* Deep space background enhancements */
 body::before {
   content: '';
   position: fixed;
@@ -275,9 +271,52 @@ body::before {
   width: 100%;
   height: 100%;
   background: 
-    radial-gradient(circle at 20% 80%, rgba(96, 165, 250, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(244, 114, 182, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(244, 114, 182, 0.03) 0%, transparent 50%);
   pointer-events: none;
   z-index: -1;
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 768px) {
+  .neon-text-glow {
+    text-shadow: 
+      0 0 3px rgba(96, 165, 250, 0.4),
+      0 0 6px rgba(96, 165, 250, 0.2),
+      0 0 12px rgba(96, 165, 250, 0.1);
+  }
+  
+  .glass {
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Reduce motion for mobile performance */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  .neon-text-glow {
+    text-shadow: none;
+    color: #ffffff;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #000000 0%, #0A0A0F 25%, #1A0B2E 50%, #0F172A 100%);
+  }
 }
