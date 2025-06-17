@@ -9,19 +9,15 @@ import Scene3D from './components/Scene3D';
 
 function App() {
   return (
-
-    <BrowserRouter basename="/portolio">
-  <App />
-</BrowserRouter>
     <div className="relative min-h-screen bg-gray-900 text-white overflow-x-hidden">
       {/* 3D Background Scene */}
       <div className="fixed inset-0 z-0">
         <Scene3D />
       </div>
-      
+
       {/* Navigation */}
       <Navigation />
-      
+
       {/* Main Content */}
       <main className="relative z-10">
         <Hero />
