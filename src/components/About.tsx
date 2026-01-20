@@ -112,7 +112,7 @@ const About = () => {
               viewport={{ once: true }}
               className="bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-yellow-500/30 hover:border-yellow-400/50 transition-all duration-300 shadow-2xl"
             >
-              <div className="flex items-start space-x-6">
+              <div className="flex flex-col lg:flex-row items-start space-y-6 lg:space-y-0 lg:space-x-6">
                 <motion.div
                   className="w-16 h-16 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-xl flex items-center justify-center flex-shrink-0"
                   whileHover={{ scale: 1.1, rotate: 10 }}
@@ -137,6 +137,67 @@ const About = () => {
                     ))}
                   </div>
                 </div>
+                
+                {/* SIH Achievement Image with Sliding Animation and Glowing Border */}
+                <motion.div
+                  className="relative lg:w-80 lg:h-60 w-full h-48 rounded-xl overflow-hidden flex-shrink-0"
+                  initial={{ opacity: 0, x: 100 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  viewport={{ once: true }}
+                >
+                  {/* Static glowing border */}
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1">
+                    <div className="w-full h-full bg-black/20 rounded-lg"></div>
+                  </div>
+                  
+                  {/* SIH Achievement Image */}
+                  <motion.img
+                    src="/src/assets/VINNA SIH.avif"
+                    alt="Smart India Hackathon 2019 Winner - Vinnarasu"
+                    className="absolute inset-2 w-[calc(100%-16px)] h-[calc(100%-16px)] object-cover rounded-lg z-10"
+                    initial={{ scale: 1.1, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.8, delay: 0.7 }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.05 }}
+                  />
+                  
+                  {/* Sliding shine effect */}
+                  <motion.div
+                    className="absolute inset-2 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-lg z-20"
+                    initial={{ x: '-100%' }}
+                    animate={{ x: '100%' }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatDelay: 3,
+                      ease: 'easeInOut'
+                    }}
+                  />
+                  
+                  {/* Achievement badge overlay */}
+                  <div className="absolute top-4 right-4 z-30">
+                    <motion.div
+                      className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      transition={{ duration: 0.5, delay: 1 }}
+                      viewport={{ once: true }}
+                    >
+                      🏆 Winner
+                    </motion.div>
+                  </div>
+                  
+                  {/* Pulsing glow effect */}
+                  <div 
+                    className="absolute inset-0 rounded-xl blur-xl -z-10"
+                    style={{
+                      background: 'linear-gradient(45deg, #FBBF24, #F59E0B, #EF4444)',
+                      animation: 'pulse 2s ease-in-out infinite'
+                    }}
+                  />
+                </motion.div>
               </div>
             </motion.div>
           ))}
